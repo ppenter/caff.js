@@ -1,0 +1,18 @@
+{
+    "compilerOptions": {
+      "module": "NodeNext",
+      "jsx": "react", // for React JSX
+      "outDir": "./dist", // Output directory for compiled files
+      "strict": true,
+      "esModuleInterop": true,
+      "skipLibCheck": true,
+      "forceConsistentCasingInFileNames": true,
+      "resolveJsonModule": true,
+      "declaration": true,
+    },
+    "include": ["src/**/*", "dist2/js"],
+    "exclude": [
+        "node_modules",
+        "dist"
+    ]
+  }

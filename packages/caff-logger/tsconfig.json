@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    // Output
+    "outDir": "./dist", // Output directory for compiled files
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "declaration": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"],
+    },
+  }
+}
