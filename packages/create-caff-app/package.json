@@ -1,6 +1,6 @@
 {
   "name": "create-caff-app",
-  "version": "0.0.2-dev.1",
+  "version": "0.0.2-dev.2",
   "main": "dist/src/index.js",
   "bin": {
     "create-caff-app": "dist/src/index.js"
