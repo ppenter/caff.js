@@ -192,9 +192,9 @@ export const createBuild = async () => {
 
     lap("server.tsx", time)
 
-    await fs.rm(`${config.outDir}/client.tsx`)
-    await fs.rm(`${config.outDir}/App.tsx`)
-    await fs.rm(`${config.outDir}/server.tsx`)
+    // await fs.rm(`${config.outDir}/client.tsx`)
+    // await fs.rm(`${config.outDir}/App.tsx`)
+    // await fs.rm(`${config.outDir}/server.tsx`)
     return await dynamic(`.caff/server.js`);
 
 }

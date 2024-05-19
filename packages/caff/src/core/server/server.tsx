@@ -47,23 +47,19 @@ export const createServer = async (options?: ServerOptions) => {
     const PORT = process.env.PORT || options?.port || 3000
     const WS_PORT = options?.wsPort || parseInt(PORT?.toString()) + 1
 
-    const wss = new WebSocketServer({ port: WS_PORT })
-    wss.on('connection', function connection(ws) {
-        ws.on('message', function incoming(message) {
-            logger.info('[WS] recieved: ', message);
-        });
-    })
-
     const app = express()
 
     app.use((req, res, next) => {
 
         let _url = rewritePath(req.path, rewrites || [])
-        if(_url !== req.path){
-            logger.info(`[REQUEST] ${req.path} -> ${_url}`)
-        }else{
-            logger.info(`[REQUEST] ${req.path}`)
+        if(_url !== "/dist/client.js"){
+            if(_url !== req.path){
+                logger.info(`[REQUEST] ${req.path} -> ${_url}`)
+            }else{
+                logger.info(`[REQUEST] ${req.path}`)
+            }
         }
+        
         req.url = _url
         next()
     })
@@ -94,7 +90,7 @@ export const createServer = async (options?: ServerOptions) => {
     app.get('*', async (req, res) => {
         const App = options?.App as any
         const Helmet = options?.Helmet as any
-        const datas = options?.imports?.datas?.map((data: any) => {
+        const datas = options?.imports?.pages?.map((data: any) => {
             return data?.path
         }) || []
 
@@ -138,7 +134,16 @@ export const createServer = async (options?: ServerOptions) => {
     })
 
     let server = app.listen(3000, () => {
+
     });
+
+    const wss = new WebSocketServer({ port: WS_PORT })
+    // logger.info(`Websocket server start at port ${WS_PORT}`)
+    wss.on('connection', function connection(ws) {
+        ws.on('message', function incoming(message) {
+            logger.info('[WS] recieved: ', message);
+        });
+    })
 
     server.on('close', () => {
         wss.close()

@@ -2,7 +2,7 @@ import { Command } from "commander";
 import chokidar from "chokidar";
 import _package from "../../package.json";
 import WebSocket from "ws";
-import { logger, spinner } from "../../../caff-logger/dist";
+import { logger, spinner } from "caff-logger";
 import { createBuild } from "../core/server/build";
 import glob from "../utils/global";
 import { createServer } from "../core/server/server";

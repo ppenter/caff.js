@@ -86,7 +86,7 @@ export default function App(props){
     server(glob: any){
         const files = glob.files
         return `
-import { createServer } from 'caff.js';
+import { createServer } from 'caff';
 import App from './App.tsx';
 import Helmet from '../src/app/_document.tsx';
 ${files.apis.map((apiPath: string, index: any) => {
@@ -96,6 +96,11 @@ ${
     files?.datas?.map((dataPath: string, index: any) => {
         return `import * as DATA_${index} from '../${dataPath}';`
     }).join("\n")}
+${
+    files?.pages?.map((layoutPath: string, index: any) => {
+        return `import PAGE_${index} from '../${layoutPath}';`
+    }).join("\n")
+}
 
 export async function startServer(){
     return await createServer({
@@ -109,7 +114,11 @@ export async function startServer(){
             datas: [${files?.datas?.map((dataPath: string, index: any) => {
                 const route = pathToRoute(dataPath)
                 return `{import: DATA_${index}, path: "${route}"}`;
-            })}]
+            })}],
+            pages: [${files?.pages?.map((layoutPath: string, index: any) => {
+                const route = pathToRoute(layoutPath)
+                return `{import: PAGE_${index}, path: "${route}"}`;
+            })}],
         }
     })
 }

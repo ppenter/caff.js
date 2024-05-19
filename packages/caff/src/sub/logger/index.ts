@@ -1,3 +1,3 @@
-import { logger } from "../../../../caff-logger/dist";
+import { logger } from "caff-logger";
 
 export default logger;
