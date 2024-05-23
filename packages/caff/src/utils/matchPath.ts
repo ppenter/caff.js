@@ -83,3 +83,7 @@ export function checkDupeRoutes(routes: string[]): string[] {
     }
     return []
 }
+
+export const isApiFolder = (path: string) => {
+    return path.startsWith("/api")
+}

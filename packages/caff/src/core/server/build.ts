@@ -12,7 +12,7 @@ import fss, { PathLike } from 'fs';
 import { nativeNodeModulesPlugin } from './plugins/native-node';
 import {sassPlugin} from 'esbuild-sass-plugin'
 import glob from '../../utils/global';
-import { checkDupeRoutes } from '../../utils/matchPath';
+import { checkDupeRoutes, isApiFolder } from '../../utils/matchPath';
 
 
 const CSSPlugin = {
@@ -79,7 +79,7 @@ export const createBuild = async () => {
 
     const apiFiles = tsFiles.filter((file) => {
         const route = pathToRoute(file)
-        return route.startsWith("/api")
+        return isApiFolder(route)
     })
 
     await buildFiles(apiFiles, {

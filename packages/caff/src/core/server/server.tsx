@@ -21,7 +21,7 @@ export interface IFileMeta {
 
 export interface ServerOptions {
     port?: number;
-    wsPort?: number;
+    wsPort?: number | undefined;
     files?: {
         pages?: any[]
         layouts?: any[]
@@ -136,6 +136,10 @@ export const createServer = async (options?: ServerOptions) => {
     let server = app.listen(3000, () => {
 
     });
+
+    if (!options?.wsPort) {
+        return {server: server}
+    }
 
     const wss = new WebSocketServer({ port: WS_PORT })
     // logger.info(`Websocket server start at port ${WS_PORT}`)

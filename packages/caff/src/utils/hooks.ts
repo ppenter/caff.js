@@ -29,6 +29,7 @@ export const pathToRoute = (path: string) => {
     // 3. replace ( and ) with ""
     // 4. replace [...and] with :and*
     // 5. replace [and] with :and
+    // 6.  replace @ with ""
 
     let _path = path
     _path = _path.replace(config.appDir, "")
@@ -37,7 +38,9 @@ export const pathToRoute = (path: string) => {
     .replace(/\((.*?)\)/g, "")
     .replace(/\[\.\.\.(.*?)\]/g, "*")
     // .replace(/\[\.\.\.(.*?)\]/g, ":$1*/")
-    .replace(/\[(.*?)\]/g, ":$1");
+    .replace(/\[(.*?)\]/g, ":$1")
+    .replace("/@api", "/api")
+    .replace("/@websocket", "")
 
     if(_path.endsWith("/")){
         _path = _path.slice(0, _path.length - 1);
