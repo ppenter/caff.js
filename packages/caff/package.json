@@ -1,12 +1,12 @@
 {
   "name": "caff",
-  "version": "0.0.11",
+  "version": "0.0.11-dev.2",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
   "license": "MIT",
   "dependencies": {
     "@types/node": "^20.9.0",
-    "caff-logger": "0.0.3",
+    "caff-logger": "0.0.5",
     "chokidar": "^3.6.0",
     "commander": "^12.0.0",
     "esbuild": "^0.21.1",
@@ -33,8 +33,8 @@
     "typescript": "^5.4.5"
   },
   "peerDependencies": {
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
+    "react": "^18",
+    "react-dom": "^18",
     "react-router-dom": "6.22.3"
   },
   "bin": {
