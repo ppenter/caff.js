@@ -1,5 +1,4 @@
 import esbuild from 'esbuild';
-import react18Plugin from "esbuild-react18-useclient";
 import { fileURLToPath } from 'url';
 import { buildFiles, dynamic, generateRoutes, writeFile } from '../../utils/files';
 import { template } from './template';
@@ -141,7 +140,7 @@ export const createBuild = async () => {
         outfile: `${config.outDir}/client/App.js`,
         target: "node14",
         platform: "node",
-        plugins: [react18Plugin, sassPlugin()],
+        plugins: [sassPlugin()],
     })
     lap("App.tsx", time)
 
