@@ -1,20 +1,12 @@
 import { Command } from "commander";
-import chokidar from "chokidar";
 import _package from "../../package.json";
 import WebSocket from "ws";
-import { logger, spinner } from "caff-logger";
 import { createBuild } from "../core/server/build";
 import glob from "../utils/global";
-import { createServer } from "../core/server/server";
 
 let server = null as any;
 const serverSockets = new Set<any>();
 let wss = null as WebSocket.Server | null;
-let clients = [] as any[];
-
-let isRestarting = false;
-
-let _spinner = spinner("Restarting");
 
 export default async function build(program: Command) {
     program

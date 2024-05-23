@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "module": "NodeNext",
     // Output
     "outDir": "./dist", // Output directory for compiled files
     "strict": true,
