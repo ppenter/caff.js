@@ -112,7 +112,7 @@ ${
     }).join("\n")
 }
 
-
+export const version = ${Date.now()}
 
 export async function startServer(){
     return await createServer({

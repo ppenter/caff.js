@@ -17,6 +17,11 @@ export default async function build(program: Command) {
       process.env.PORT = process.env.PORT || "3000";
       process.env.WS_PORT = process.env.WS_PORT || "3001";
       glob.clients = [] as WebSocket[];
+
+      process.on("SIGINT", () => {
+        destroySockets(serverSockets);
+        process.exit(0);
+      })
       console.clear();
 
       await startServer();
@@ -33,7 +38,7 @@ async function startServer() {
     destroySockets(serverSockets);
     if(!server?.address()){
     wss?.close();
-    const {server: _server, wss: websocket} = await sv1.startServer();
+    const {server: _server, wss: websocket} = await sv1.startServer()?.then((res: any) => res).catch((err: any) => {})
     server = _server;
     wss = websocket;
     wss?.on("connection", (socket: any) => {

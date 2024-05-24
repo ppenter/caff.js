@@ -212,6 +212,9 @@ export const createBuild = async () => {
     // await fs.rm(`${config.outDir}/client.tsx`)
     // await fs.rm(`${config.outDir}/App.tsx`)
     // await fs.rm(`${config.outDir}/server.tsx`)
+    Object.keys(require.cache).forEach((key) => {
+        delete require.cache[key];
+    });
     return await dynamic(`.caff/server.js`);
 
 }

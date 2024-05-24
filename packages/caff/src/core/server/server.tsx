@@ -10,6 +10,7 @@ import { matchPath } from '../../utils/matchPath';
 import glob from '../../utils/global';
 import { rewritePath } from '../../utils/rewritePath';
 import { CaffWebsocket } from '../../sub/types';
+import nocache from 'nocache';
 
 export interface IFileMeta {
     path: string;
@@ -49,6 +50,8 @@ export const createServer = async (options?: ServerOptions) => {
     const WS_PORT = config?.wsPort || parseInt(PORT?.toString()) + 1
 
     const app = express()
+
+    app.use(nocache())
 
     app.use((req, res, next) => {
 
@@ -105,12 +108,19 @@ export const createServer = async (options?: ServerOptions) => {
             return res.status(404).send('Page Not Found')
         }
 
-        const props = await data?.(req, res)
+        const _data = await data?.(req, res)
+
+        const props = {
+            ..._data,
+            query: {
+                ...match?.[1]
+            }
+        }
 
         const { pipe } = renderToPipeableStream(
             <StaticRouter location={req.url}>
                 <Helmet>
-                    <App {...props} {...match?.[1]} />
+                    <App {...props} />
                 </Helmet>
             </StaticRouter>
         , {
@@ -131,11 +141,12 @@ export const createServer = async (options?: ServerOptions) => {
                 res.status(500).send('Internal Server Error');
             }
           });
+          return
         // res.sendFile(`${process.cwd()}/src/public/index.html`)
     })
 
     let server = app.listen(3000, () => {
-
+        
     });
 
     if (!config?.wsPort) {
