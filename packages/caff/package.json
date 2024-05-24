@@ -1,6 +1,6 @@
 {
   "name": "caff",
-  "version": "0.0.11-dev.8",
+  "version": "0.0.12-dev.9",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
   "license": "MIT",
@@ -21,7 +21,8 @@
     ".": "./dist/src/index.js",
     "./hooks": "./dist/src/sub/hooks/index.js",
     "./logger": "./dist/src/sub/logger/index.js",
-    "./context": "./dist/src/sub/context/index.js"
+    "./context": "./dist/src/sub/context/index.js",
+    "./types": "./dist/src/sub/types/index.js"
   },
   "devDependencies": {
     "@babel/core": "^7.24.5",
