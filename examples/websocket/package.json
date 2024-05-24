@@ -1,0 +1,22 @@
+{
+  "name": "websites",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "caff start",
+    "build": "caff build",
+    "dev": "caff dev"
+  },
+  "dependencies": {
+    "caff": "0.0.12-dev.10",
+    "react": "^18",
+    "react-dom": "^18",
+    "react-router-dom": "^6.23.0",
+    "react-use-websocket": "^4.8.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18",
+    "@types/react-dom": "^18"
+  }
+}
