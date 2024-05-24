@@ -9,6 +9,7 @@ import { context } from '../../sub/context';
 import { matchPath } from '../../utils/matchPath';
 import glob from '../../utils/global';
 import { rewritePath } from '../../utils/rewritePath';
+import { CaffWebsocket } from '../../sub/types';
 
 export interface IFileMeta {
     path: string;
@@ -141,34 +142,44 @@ export const createServer = async (options?: ServerOptions) => {
         return {server: server}
     }
 
-    const wss = new WebSocketServer({ port: WS_PORT })
+    let wss = new WebSocketServer({ port: WS_PORT }) as any
 
+    (wss as any).getUniqueID = function () {
+        function s4() {
+            return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+        }
+        return s4() + s4() + '-' + s4();
+    };
+    wss.on('connection', function connection(ws: CaffWebsocket) {
+        ws.id = wss.getUniqueID();
+        ws.on('message', async function incoming(message: any) {
 
-    wss.on('connection', function connection(ws) {
-        ws.on('message', async function incoming(message) {
             const _message = message?.toString()
             const routes = options?.imports?.messages?.map((msg: any) => {
                 return msg?.path
             }).sort((a, b) => a?.includes("*") ? 1 : -1) || []
             const isMatch = matchPath(_message, routes, "|")
                 if(isMatch){
-                    options?.imports?.messages?.find(async (msg: any) => {
-                        if(msg?.path === isMatch?.[0]){
-                            await msg?.import?.MSG?.({
-                                ws: ws,
-                                params: isMatch?.[1],
-                                message: _message
-                            })
-                        }
+                    const match = options?.imports?.messages?.find((msg: any) => {
+                        return msg?.path == isMatch?.[0]
                     })
+                    if(match){
+                        await match?.import?.MSG?.({
+                            ws: ws,
+                            params: isMatch?.[1],
+                            message: _message,
+                            clients: wss.clients
+                        })
+                    }
                 }
         });
 
         options?.imports?.events?.map((event: any) => {
-            ws.on(event?.path, async (data) => {
+            ws.on(event?.path, async (data: any) => {
                 await event?.import?.EVENT?.({
                     ws: ws,
-                    data: data
+                    data: data,
+                    clients: wss.clients
                 })
             })
         })

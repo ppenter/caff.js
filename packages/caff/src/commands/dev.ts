@@ -92,7 +92,7 @@ async function startServer() {
 
 function destroySockets(sockets: any) {
     for (const socket of sockets.values()) {
-        socket?.destroy();
+        socket?.destroy?.();
     }
     if(server) {
       server?.close();

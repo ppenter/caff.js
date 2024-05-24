@@ -133,7 +133,7 @@ await writeFile("/package.json", `
         "dev": "caff dev"
     },
     "dependencies": {
-        "caff": "^0.0.3",
+        "caff": "latest",
         "react": "^18",
         "react-dom": "^18",
         "react-router-dom": "^6.23.0"
