@@ -14,7 +14,9 @@ export interface ICaffConfig {
         api: string;
         message: string;
         data: string;
-    }
+    },
+    port?: number;
+    wsPort?: number;
 }
 
 export const getConfig = async (): Promise<ICaffConfig> => {

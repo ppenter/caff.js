@@ -73,7 +73,12 @@ export const createBuild = async () => {
     const tsFiles = await generateRoutes(config.srcDir, ".ts")
 
     const dataFiles = tsFiles.filter((file) => {
-        return file.endsWith(config.preserve.data)
+        const isValid1 = !file.includes("@")
+        // isVlid2 = Folder name not include _
+        const isValid2 = file.split("/").every((f) => {
+            return !f.startsWith("_")
+        })
+        return file.endsWith(config.preserve.data) && isValid1 && isValid2
     })
 
     const apiFiles = tsFiles.filter((file) => {
@@ -109,12 +114,25 @@ export const createBuild = async () => {
         }
     })
 
+    const eventFiles = tsFiles.filter((file) => {
+        const route = pathToRoute(file)
+        const isValid1 = route.startsWith("/ws/events")
+        return isValid1
+    })
+
+    const msgsFiles = tsFiles.filter((file) => {
+        const route = pathToRoute(file)
+        const isValid1 = route.startsWith("/ws/messages")
+        return isValid1
+    })
+
     glob.files = {
         pages: pageFiles,
         layouts: layoutFiles,
-        messages: [],
         apis: apiFiles,
-        datas: dataFiles
+        datas: dataFiles,
+        events: eventFiles,
+        messages: msgsFiles
     }
 
     // If route in page is duplicated, throw an error

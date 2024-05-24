@@ -20,21 +20,21 @@ export interface IFileMeta {
 }
 
 export interface ServerOptions {
-    port?: number;
-    wsPort?: number | undefined;
     files?: {
         pages?: any[]
         layouts?: any[]
         messages?: any[]
         apis?: any[]
-        datas?: any[]
+        datas?: any[],
+        events?: any[]
     },
     imports?: {
         pages?: any[]
         layouts?: any[]
         messages?: any[]
         apis?: any[]
-        datas?: any[]
+        datas?: any[],
+        events?: any[]
     },
     App?: any,
     Helmet?: any
@@ -44,8 +44,8 @@ export const createServer = async (options?: ServerOptions) => {
     const config = await getConfig()
     glob.caffConfig = config
     const rewrites = glob.caffConfig.rewrites
-    const PORT = process.env.PORT || options?.port || 3000
-    const WS_PORT = options?.wsPort || parseInt(PORT?.toString()) + 1
+    const PORT = process.env.PORT || config?.port || 3000
+    const WS_PORT = config?.wsPort || parseInt(PORT?.toString()) + 1
 
     const app = express()
 
@@ -95,6 +95,7 @@ export const createServer = async (options?: ServerOptions) => {
         }) || []
 
         const match = matchPath(req.path, datas)
+        console.log(req.path, datas)
 
         const data = options?.imports?.datas?.find((data: any) => {
             return data?.path === match?.[0]
@@ -137,16 +138,41 @@ export const createServer = async (options?: ServerOptions) => {
 
     });
 
-    if (!options?.wsPort) {
+    if (!config?.wsPort) {
         return {server: server}
     }
 
     const wss = new WebSocketServer({ port: WS_PORT })
-    // logger.info(`Websocket server start at port ${WS_PORT}`)
+
+
     wss.on('connection', function connection(ws) {
-        ws.on('message', function incoming(message) {
-            logger.info('[WS] recieved: ', message);
+        ws.on('message', async function incoming(message) {
+            const _message = message?.toString()
+            const routes = options?.imports?.messages?.map((msg: any) => {
+                return msg?.path
+            }).sort((a, b) => a?.includes("*") ? 1 : -1) || []
+            const isMatch = matchPath(_message, routes, "|")
+                if(isMatch){
+                    options?.imports?.messages?.find(async (msg: any) => {
+                        if(msg?.path === isMatch?.[0]){
+                            await msg?.import?.MSG?.({
+                                ws: ws,
+                                params: isMatch?.[1],
+                                message: _message
+                            })
+                        }
+                    })
+                }
         });
+
+        options?.imports?.events?.map((event: any) => {
+            ws.on(event?.path, async (data) => {
+                await event?.import?.EVENT?.({
+                    ws: ws,
+                    data: data
+                })
+            })
+        })
     })
 
     server.on('close', () => {

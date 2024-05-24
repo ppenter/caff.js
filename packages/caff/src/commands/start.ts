@@ -15,6 +15,7 @@ export default async function build(program: Command) {
     .action(async () => {
         process.env.NODE_ENV = "production";
       process.env.PORT = process.env.PORT || "3000";
+      process.env.WS_PORT = process.env.WS_PORT || "3001";
       glob.clients = [] as WebSocket[];
       console.clear();
 
@@ -22,6 +23,7 @@ export default async function build(program: Command) {
       console.log(`
         Caff.js version: ${_package.version}
         Server is running on http://localhost:${process.env.PORT}
+        Websocket is running on ws://localhost:${process.env.WS_PORT}
       `);
     });
 }
@@ -45,7 +47,7 @@ async function startServer() {
 
   function destroySockets(sockets: any) {
     for (const socket of sockets.values()) {
-        socket.destroy();
+        socket?.destroy();
     }
     if(server) {
       server?.close();

@@ -40,7 +40,7 @@ export const pathToRoute = (path: string) => {
     // .replace(/\[\.\.\.(.*?)\]/g, ":$1*/")
     .replace(/\[(.*?)\]/g, ":$1")
     .replace("/@api", "/api")
-    .replace("/@websocket", "")
+    .replace("/@websocket", "/ws")
 
     if(_path.endsWith("/")){
         _path = _path.slice(0, _path.length - 1);

@@ -101,6 +101,18 @@ ${
         return `import PAGE_${index} from '../${layoutPath}';`
     }).join("\n")
 }
+${
+    files?.messages?.map((msgPath: string, index: any) => {
+        return `import * as MESSAGE_${index} from '../${msgPath}';`
+    }).join("\n")
+}
+${
+    files?.events?.map((eventPath: string, index: any) => {
+        return `import * as EVENT_${index} from '../${eventPath}';`
+    }).join("\n")
+}
+
+
 
 export async function startServer(){
     return await createServer({
@@ -118,6 +130,14 @@ export async function startServer(){
             pages: [${files?.pages?.map((layoutPath: string, index: any) => {
                 const route = pathToRoute(layoutPath)
                 return `{import: PAGE_${index}, path: "${route}"}`;
+            })}],
+            messages: [${files?.messages?.map((msgPath: string, index: any) => {
+                const route = pathToRoute(pathToRoute(msgPath).replace("/ws/messages","") + `/${msgPath?.split("/")?.pop()?.replace(".ts", "")}`).replaceAll("/", "|").replace("|", "")
+                return `{import: MESSAGE_${index}, path: "${route}"}`;
+            })}],
+            events: [${files?.events?.map((eventPath: string, index: any) => {
+                const route = pathToRoute(pathToRoute(eventPath).replace("/ws/events","") + `/${eventPath?.split("/")?.pop()?.replace(".ts", "")}`).replaceAll("/", "|").replace("|", "")
+                return `{import: EVENT_${index}, path: "${route}"}`;
             })}],
         }
     })
