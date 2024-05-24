@@ -95,7 +95,6 @@ export const createServer = async (options?: ServerOptions) => {
         }) || []
 
         const match = matchPath(req.path, datas)
-        console.log(req.path, datas)
 
         const data = options?.imports?.datas?.find((data: any) => {
             return data?.path === match?.[0]
