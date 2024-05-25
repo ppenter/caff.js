@@ -1,6 +1,6 @@
 {
   "name": "caff",
-  "version": "0.0.12-dev.10",
+  "version": "0.0.12-dev.11",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
   "license": "MIT",
