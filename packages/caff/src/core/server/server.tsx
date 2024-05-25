@@ -1,6 +1,6 @@
 import React from 'react';
 import express from "express"
-import { WebSocketServer } from 'ws';
+import WebSocket from 'ws';
 import { getConfig } from "../../variables";
 import { renderToPipeableStream } from "react-dom/server";
 import { StaticRouter } from "react-router-dom/server";
@@ -12,7 +12,6 @@ import { rewritePath } from '../../utils/rewritePath';
 import { CaffWebsocket } from '../../sub/types';
 import nocache from 'nocache';
 import http from 'http';
-import { Server } from "socket.io"
 
 export interface IFileMeta {
     path: string;
@@ -48,8 +47,8 @@ export const createServer = async (options?: ServerOptions) => {
     const config = await getConfig()
     glob.caffConfig = config
     const rewrites = glob.caffConfig.rewrites
-    // const PORT = process.env.PORT || config?.port || 3000
-    const PORT = 3000
+    const PORT = process.env.PORT || config?.port || 3000
+    // const PORT = 3000
 
     const app = express()
 
@@ -148,7 +147,7 @@ export const createServer = async (options?: ServerOptions) => {
         // res.sendFile(`${process.cwd()}/src/public/index.html`)
     })
 
-    const _server = http.createServer(app);
+    const _server = http.createServer(app)
 
     let server = _server.listen(typeof PORT == 'string' ? parseInt(PORT) : PORT, () => {
         console.log(`
@@ -160,7 +159,7 @@ export const createServer = async (options?: ServerOptions) => {
         return {server: server}
     }
 
-    let wss = new WebSocketServer({ server: server }) as any
+    let wss = new WebSocket.Server({ server: server }) as any
 
     (wss as any).getUniqueID = function () {
         function s4() {
