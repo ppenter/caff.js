@@ -1,6 +1,6 @@
 {
   "name": "caff",
-  "version": "0.0.12-dev.11",
+  "version": "0.0.12-dev.12",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
   "license": "MIT",
@@ -16,6 +16,7 @@
     "nocache": "^4.0.0",
     "nodemon": "^3.1.0",
     "rimraf": "^5.0.5",
+    "socket.io": "^4.7.5",
     "winston": "^3.13.0",
     "ws": "^8.17.0"
   },
