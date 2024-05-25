@@ -49,7 +49,6 @@ export const createServer = async (options?: ServerOptions) => {
     glob.caffConfig = config
     const rewrites = glob.caffConfig.rewrites
     const PORT = process.env.PORT || config?.port || 3000
-    const WS_PORT = config?.wsPort || parseInt(PORT?.toString()) + 1
 
     const app = express()
 
@@ -150,8 +149,10 @@ export const createServer = async (options?: ServerOptions) => {
 
     const _server = http.createServer(app);
 
-    let server = _server.listen(PORT, () => {
-        
+    let server = _server.listen(typeof PORT == 'string' ? parseInt(PORT) : PORT, () => {
+        console.log(`
+        Server is running on http://localhost:${PORT}
+        `)
     });
 
     if (!config?.wsPort) {

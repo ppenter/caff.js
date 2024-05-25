@@ -14,7 +14,6 @@ export default async function build(program: Command) {
     .description("Start the server")
     .action(async () => {
       process.env.PORT = process.env.PORT || "3000";
-      process.env.WS_PORT = process.env.WS_PORT || "3001";
       glob.clients = [] as WebSocket[];
 
       process.on("SIGINT", () => {
@@ -35,11 +34,11 @@ export default async function build(program: Command) {
       console.clear();
 
       await startServer();
-      console.log(`
-        Caff.js version: ${_package.version}
-        Server is running on http://localhost:${process.env.PORT}
-        Websocket is running on ws://localhost:${process.env.PORT}
-      `);
+      // console.log(`
+      //   Caff.js version: ${_package.version}
+      //   Server is running on http://localhost:${process.env.PORT}
+      //   Websocket is running on ws://localhost:${process.env.PORT}
+      // `);
     });
 }
 
