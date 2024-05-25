@@ -11,6 +11,8 @@ import glob from '../../utils/global';
 import { rewritePath } from '../../utils/rewritePath';
 import { CaffWebsocket } from '../../sub/types';
 import nocache from 'nocache';
+import http from 'http';
+import { Server } from "socket.io"
 
 export interface IFileMeta {
     path: string;
@@ -146,7 +148,9 @@ export const createServer = async (options?: ServerOptions) => {
         // res.sendFile(`${process.cwd()}/src/public/index.html`)
     })
 
-    let server = app.listen(3000, () => {
+    const _server = http.createServer(app);
+
+    let server = _server.listen(PORT, () => {
         
     });
 
@@ -154,7 +158,7 @@ export const createServer = async (options?: ServerOptions) => {
         return {server: server}
     }
 
-    let wss = new WebSocketServer({ port: WS_PORT }) as any
+    let wss = new WebSocketServer({ server: server }) as any
 
     (wss as any).getUniqueID = function () {
         function s4() {
@@ -202,7 +206,9 @@ export const createServer = async (options?: ServerOptions) => {
     })
 
     process.on('SIGINT', () => {
+        console.log('SIGINT')
         wss.close()
+        server.close()
         process.exit()
     })
 

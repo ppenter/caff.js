@@ -61,7 +61,8 @@ interface BuildConfig {
     mode: 'development' | 'production';
 }
 
-export const createBuild = async () => {
+export const createBuild = async (options?: any) => {
+    const { dev = true } = options || {}
     const time = Date.now()
     const _config = await getConfig();
     let config = _config;
@@ -162,6 +163,18 @@ export const createBuild = async () => {
     })
     lap("App.tsx", time)
 
+    let define = {} as any
+
+    define[`process.env.NODE_ENV`] = `"${dev ? "development" : "production"}"`
+    // read .env file
+    const env = await fs.readFile(`.env`, "utf-8")
+    const envLines = env.split("\n")
+    envLines.forEach((line) => {
+        const [key, value] = line.split("=")
+        define[`process.env.${key}`] = `"${value}"`
+        process.env[key] = value
+    })
+
     // build the client.tsx file
     const clientTSX = template.client()
 
@@ -170,12 +183,14 @@ export const createBuild = async () => {
     await esbuild.build({
         entryPoints: [`${config.outDir}/client.tsx`],
         bundle: true,
+        minify: !dev,
         loader: {
             ".tsx": "tsx",
             ".css": "text",
         },
         plugins: [CSSPlugin, nativeNodeModulesPlugin],
         outfile: `${config.outDir}/client/client.js`,
+        define: define
     })
     lap("client.tsx", time)
 
@@ -190,7 +205,7 @@ export const createBuild = async () => {
     lap("data files", time)
 
     // create server file
-    const serverTSX = template.server(glob)
+    const serverTSX = template.server(glob, dev)
 
     await writeFile(`${config.outDir}/server.tsx`, serverTSX)
 

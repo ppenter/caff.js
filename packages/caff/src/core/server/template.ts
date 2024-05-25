@@ -83,7 +83,7 @@ export default function App(props){
 `
     }
 
-    server(glob: any){
+    server(glob: any, dev: boolean){
         const files = glob.files
         return `
 import { createServer } from 'caff';
@@ -114,8 +114,10 @@ ${
 
 export const version = ${Date.now()}
 
+
 export async function startServer(){
-    return await createServer({
+${dev ? `process.env.NODE_ENV = "development"` : `process.env.NODE_ENV = "production"`}
+return await createServer({
         App: App,
         Helmet: Helmet,
         imports: {
