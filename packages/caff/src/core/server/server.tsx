@@ -127,6 +127,7 @@ export const createServer = async (options?: ServerOptions) => {
             bootstrapScripts: ['/dist/client.js'],
             onShellReady() {
               res.setHeader('content-type', 'text/html');
+              res.setHeader('accept-endoding', 'gzip, deflate, br')
             //   inject scripts
             const script = `
                 <script>

@@ -23,9 +23,8 @@ let _spinner = spinner("Restarting");
 
 const config = {
   verbose: false,
-  watch: [ '.', "*" ],
+  watch: [ "src/" ],
   ext: "js, css, ts, tsx, jsx",
-  delay: 500,
   exec: 'yarn start',
 }
 

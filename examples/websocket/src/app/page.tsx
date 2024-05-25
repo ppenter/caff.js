@@ -5,28 +5,28 @@ import CollabZone from "./_components/collabZone";
 
 const features = [
     {
-        title: "React",
-        description: "Caff.js is built with React. You can use all the features of React in your project."
+        title: "React 18",
+        description: "Caff.js is built with React 18. You can use all the features of React in your project."
     },
     {
         title: "API",
-        description: "Caff.js has a built-in API server. You can use it to create your own API."
+        description: "Built-in API server. You can use it to create your own API."
     },
     {
         title: "Websocket",
-        description: "Caff.js has a built-in Websocket server. You can use it to create real-time applications."
+        description: "Built-in Websocket server. You can use it to create real-time applications."
     },
     {
-        title: "Fullstack",
-        description: "Caff.js is a fullstack web development framework. You can use it to create fullstack applications."
+        title: "SSR",
+        description: "Reduce the time to first paint with server-side rendering and better SEO."
     },
     {
         title: "Opensource",
-        description: "Caff.js is an open-source project. You can contribute to the project on Github."
+        description: "Transparent and open-source project. You can contribute to the project on Github."
     },
     {
-        title: "Easy to use",
-        description: "Caff.js is easy to use. You can create a new project with just one command."
+        title: "Straightforward",
+        description: "Easy to maintain and scale. Every file has its own purpose."
     }
 ]
 
