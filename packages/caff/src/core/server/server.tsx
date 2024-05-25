@@ -48,7 +48,8 @@ export const createServer = async (options?: ServerOptions) => {
     const config = await getConfig()
     glob.caffConfig = config
     const rewrites = glob.caffConfig.rewrites
-    const PORT = process.env.PORT || config?.port || 3000
+    // const PORT = process.env.PORT || config?.port || 3000
+    const PORT = 3000
 
     const app = express()
 
